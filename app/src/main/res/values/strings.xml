@@ -1,3 +1,63 @@
 <resources>
     <string name="app_name">SzlakiGórskieAM</string>
+
+    <string name="szlak_wokol_tatr">
+        Jedna z najbardziej malowniczych tras rowerowych w Polsce. Szlak wokół Tatr to łącznie ponad 250 km tras po polskiej i słowackiej stronie gór. Trasa bogata jest w ciekawe obiekty historyczne, kulturowe i oczywiście przyrodnicze. Szlak daje możliwość objechania pasma górskiego w koło, prowadzi przez Podhale, Orawę, Liptów i Spisz.
+
+Choć kręcenie w tatrzańskich okolicznościach brzmi jak wyzwanie, odcinek szlaku “Trasa Główna” jest naprawdę płaski, ponieważ biegnie dawnym nasypem linii kolejowej. Warto wybrać się na podhalański odcinek “Trasy Głównej” Szlaku wokół Tatr, który rozpoczyna się w Nowym Targu i kończy w Suchej Górze. Jest to idealny szlak dla każdego miłośnika gór!
+    </string>
+
+    <string name="rowery_szlak_orlich_gniazd">
+        Jura Krakowsko – Częstochowska, przez którą przebiega Szlak Orlich Gniazd jest jednym z najpiękniejszych regionów Polski. Cała trasa prowadzi od Częstochowy aż do Krakowa i liczy około 190 km. Szlak biegnie przez krainę skalistych wzgórz, porośniętych lasami pagórków, pełną jaskiń, wapiennych ostańców i wąwozów. Jest to unikalna pod względem krajoznawczym, przyrodniczym i historycznym trasa, którą zdecydowanie warto poznać.
+    </string>
+
+    <string name="wislana_trasa_rowerowa">
+        Wiślana Trasa Rowerowa to ogólnopolski projekt, który ma prowadzić od źródeł Wisły aż po Bałtyk. Docelowo ma to być najdłuższa trasa rowerowa w Polsce! Jego całkowita długość ma liczyć około 1200 km. Jednak na obecną chwilę w Polsce zrealizowane są dwa odcinki tego szlaku na terenie trzech województw: śląskiego, małopolskiego oraz kujawsko – pomorskiego.
+
+Warto wybrać się na odcinek, który rozpoczyna się w Oświęcimiu i kończy w Krakowie. Przebiega on po najbardziej atrakcyjnych i malowniczych miejscach doliny Wisły i jej dopływach na terenie województwa małopolskiego.
+    </string>
+
+    <string name="wzdluz_baltyku">
+        Jest to wyjątkowy szlak, który biegnie zgodnie z europejską trasą rowerową EV10, okrąża Bałtyk i liczy w sumie ponad 8000 km. Polska część trasy ma około 600 km i zaczyna się na wyspie Wolin a kończy w miejscowości Braniewo. Malownicza trasa prowadzi wzdłuż linii brzegowej Bałtyku i Zalewu Wiślanego zapewniając niezwykłe widoki. Na szlaku mija się wiele atrakcji przyrodniczych i turystycznych, można też odwiedzić miasta takie jak Gdańsk czy Kołobrzeg. Punkt obowiązkowy dla wszystkich miłośników morskiej bryzy i latarni morskich!
+    </string>
+
+    <string name="velo_czorsztyn">
+        Ścieżka rowerowa Velo Czorsztyn poprowadzona wokół Jeziora Czorsztyńskiego bije ostatnio rekordy popularności. Chętnie wybierają ją zarówno rodziny z dziećmi jak i zapaleni cykliści. Szlak rowerowy Velo Czorsztyn ma dwa warianty.
+
+Pierwszy to dłuższa pętla, która liczy 38,5 km i jest to zdecydowanie trasa dla ambitnych kolarzy, którym nie straszne są górki.
+
+Drugi wariant jest łagodniejszy, trasa liczy 27,5 km i biegnie w większości ścieżką wokół jeziora. Jednak w tym przypadku trzeba skorzystać z kursującego promu między zamkiem w Niedzicy, a zamkiem w Czorsztynie. Dodatkowa atrakcja!
+    </string>
+
+    <string name="glowny_szlak_beskidzki">
+        Najdłuższy szlak w Polsce biegnący przez góry to oczywiście GSB, czyli Główny Szlak Beskidzki. Jego niewątpliwą zaletą jest fakt, że przez większość czasu prowadzi głównymi grzbietami gór. Podążając tym szlakiem przejdziesz przez Bieszczady, Beskid Niski, Beskid Sądecki, Gorce, Beskid Żywiecki oraz Beskid Śląski.
+
+        Przed II Wojną Światową wielki szlak beskidzki był jeszcze dłuższy. Ciągnął się bowiem również przez góry leżące na terenie obecnej Ukrainy, prowadząc aż do pasma Czarnohora.
+    </string>
+
+    <string name="glowny_szlak_sudecki">
+        GSS, Główny Szlak Sudecki, to młodszy i krótszy brat GSB. Przecina główne partie Sudetów, pozwalając poznać najważniejsze pasma tego regionu. Suma podejść na tym szlaku wynosi ponad 14 km.
+
+        W 2009 r. GSS został wydłużony o Góry Opawskie. Wcześniej szlak biegł tylko do Paczkowa.
+
+        Główny Szlak Sudecki nie jest pozbawiony wad. Zbyt często prowadzi asfaltem, pomija ważne szczyty leżące na granicy (idąc GSS, nie zdobędziesz ani Śnieżki, ani Śnieżnika), na niektórych płaskich odcinkach można się wręcz poczuć, jakby się było na szlaku rowerowym. Mimo to GSS pozwala odkryć wiele pięknych miejsc i można polecić go każdemu, kto chce poznać bliżej sudeckie pasma.
+    </string>
+
+    <string name="szlak_karpacki">
+        Na Główny Szlak Beskidzki każdego roku ruszają setki turystów i na trasie rzadko kiedy można być samemu. Tymczasem przez Podkarpacie i wschodnią Małopolskę prowadzi również inna droga: niebieski szlak graniczny. Przez większość czasu przebiega on przez odludne lub słabo zagospodarowane rejony Polski. Oznakowanie niekiedy kuleje, wiele ścieżek jest zaniedbanych, a infrastruktura turystyczna nie jest zbyt rozwinięta.
+
+Szlak Karpacki prowadzi z Rzeszowa na południe przez piękne, a mało znane pogórza. Potem przez Góry Sanocko-Turczańskie dociera w Bieszczady. Tam skręca na zachód, by dotrzeć do Beskidu Niskiego. Ten szlak długodystansowy to trasa dla doświadczonych piechurów, którzy ruszają z własnym sprzętem biwakowym i nie boją się spędzić kilku dni w zupełnej samotności z dala od cywilizacji.
+    </string>
+
+    <string name="niebieski_szlak_sudecki">
+        Tak jak Szlak Karpacki stanowi alternatywę dla GSB, Niebieski Szlak Sudecki pozwala spojrzeć na Sudety z innej strony, niż proponuje to Główny Szlak Sudecki.
+
+        Niebieski szlak biegnący przez Sudety ma formę niepełnej pętli. Z Gór Izerskich prowadzi w Góry Kaczawskie i Rudawy. Potem odbija na północ, by spotkać się z GSS w Górach Sowich. Następnie okrąża Kotlinę Kłodzką i na koniec dociera do Gór Stołowych oraz uroczego schroniska Pasterka.
+    </string>
+
+    <string name="szlak_nadmorski_baltycki">
+        Na pytanie „Góry czy morze?” odpowiadasz zawsze góry? Raz zrób wyjątek i rusz na szlak wzdłuż polskiego wybrzeża. Zamiast przewyższeń napotkasz tutaj latarnie, jeziora, mierzeje, wydmy i plaże. Jeżeli chcesz, po dotarciu do Żarnowca możesz kontynuować wędrówkę aż na Hel.
+
+        Nadmorska trasa to szlak długodystansowy, na który zdecydowanie lepiej ruszyć poza sezonem. Latem tłumy plażowiczów mogą odebrać wszelką radość z wędrówki.
+    </string>
 </resources>

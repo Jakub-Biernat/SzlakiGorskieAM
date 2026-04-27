@@ -14,6 +14,11 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.clickable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +35,7 @@ fun TrailDetailScreen(
             )
         }
     ) { padding ->
-
+        val context = LocalContext.current
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -64,11 +69,25 @@ fun TrailDetailScreen(
 
                 Text("Kategoria: ${trail!!.category}")
                 Text("Długość: ${trail!!.distance} km")
-                Text("Kolor: ${trail!!.color}")
+                Text("Start: ${trail!!.trailStart}")
+                Text("Koniec: ${trail!!.trailEnd}")
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text("Opis: ${trail!!.description}")
+                Text(
+                    text = stringResource(id = trail!!.descRes)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Więcej szczegółów",
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(trail!!.websiteUrl))
+                        context.startActivity(intent)
+                    }
+                )
             }
         }
     }
