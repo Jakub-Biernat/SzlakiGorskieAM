@@ -12,7 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,13 +44,27 @@ fun TrailsListScreen(viewModel: TrailViewModel, onClick: (Int) -> Unit) {
 
             LazyColumn {
                 items(trails) { trail ->
-                    Text(
-                        text = trail.name,
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onClick(trail.id) }
-                            .padding(16.dp)
-                    )
+                            .padding(8.dp)
+                    ) {
+
+                        Image(
+                            painter = painterResource(id = trail.imageRes),
+                            contentDescription = trail.name,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .padding(end = 8.dp),
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Column {
+                            Text(text = trail.name)
+                            Text(text = "${trail.distance} km")
+                        }
+                    }
                 }
             }
         }

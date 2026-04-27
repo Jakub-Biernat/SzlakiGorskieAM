@@ -8,5 +8,6 @@ data class Trail(
     val description: String,
     val category: String,
     val distance: Double,
-    val color: String
+    val color: String,
+    val imageRes: Int
 )

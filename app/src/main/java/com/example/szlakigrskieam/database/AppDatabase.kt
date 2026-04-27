@@ -6,8 +6,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.szlakigrskieam.R
 
-@Database(entities = [Trail::class], version = 1)
+@Database(entities = [Trail::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun trailDao(): TrailDao
@@ -38,27 +39,30 @@ abstract class AppDatabase : RoomDatabase() {
                                             description = "Popularny szlak w Tatrach",
                                             category = "górski",
                                             distance = 6.5,
-                                            color = "czerwony"
+                                            color = "czerwony",
+                                            imageRes = R.drawable.giewont
                                         ),
                                         Trail(
                                             name = "Dolina Kościeliska",
                                             description = "Łatwy spacerowy szlak",
                                             category = "górski",
                                             distance = 8.0,
-                                            color = "zielony"
+                                            color = "zielony",
+                                            imageRes = R.drawable.dolina
                                         ),
                                         Trail(
                                             name = "Velo Dunajec",
                                             description = "Trasa rowerowa w Małopolsce",
                                             category = "rowerowy",
                                             distance = 60.0,
-                                            color = "niebieski"
+                                            color = "niebieski",
+                                            imageRes = R.drawable.velo
                                         )
                                     )
                                 )
                             }
                         }
-                    }).fallbackToDestructiveMigration(false).build()
+                    }).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

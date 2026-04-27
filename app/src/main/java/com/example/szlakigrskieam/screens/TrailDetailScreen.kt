@@ -11,6 +11,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.szlakigrskieam.database.Trail
 import com.example.szlakigrskieam.viewmodel.TrailViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +44,17 @@ fun TrailDetailScreen(
 
             } else {
 
+                Image(
+                    painter = painterResource(id = trail!!.imageRes),
+                    contentDescription = trail!!.name,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentScale = ContentScale.Crop
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = trail!!.name,
                     style = MaterialTheme.typography.headlineMedium
@@ -49,13 +63,7 @@ fun TrailDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text("Kategoria: ${trail!!.category}")
-
-                Spacer(modifier = Modifier.height(8.dp))
-
                 Text("Długość: ${trail!!.distance} km")
-
-                Spacer(modifier = Modifier.height(8.dp))
-
                 Text("Kolor: ${trail!!.color}")
 
                 Spacer(modifier = Modifier.height(16.dp))
