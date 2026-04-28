@@ -34,7 +34,17 @@ fun Main(){
     val navController = rememberNavController()
     val trailViewModel: TrailViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = "TrailsListScreen"){
+    NavHost(navController = navController, startDestination = "AnimationScreen"){
+        composable("AnimationScreen") {
+            AnimationScreen(
+                onAnimationEnd = {
+                    navController.navigate("TrailsListScreen") {
+                        popUpTo("SplashScreen") { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable("TrailsListScreen") {
             TrailsListScreen(
                 viewModel = trailViewModel,
@@ -43,6 +53,7 @@ fun Main(){
                 }
             )
         }
+
         composable("TrailDetailScreen/{trailId}") { backStackEntry ->
             val trailId = backStackEntry.arguments
                 ?.getString("trailId")
