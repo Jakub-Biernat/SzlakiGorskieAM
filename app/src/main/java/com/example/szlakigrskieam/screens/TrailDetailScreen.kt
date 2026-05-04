@@ -30,6 +30,12 @@ import androidx.compose.material3.IconButton
 import com.example.szlakigrskieam.viewmodel.StopwatchState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.navigation.NavController
+import kotlin.math.abs
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,9 +43,13 @@ import androidx.compose.foundation.verticalScroll
 fun TrailDetailScreen(
     viewModel: TrailViewModel,
     trailId: Int,
-    stopwatchViewModel: StopwatchViewModel
+    stopwatchViewModel: StopwatchViewModel,
+    navController: NavController   // 👈 DODAJ
 ) {
     val trail by viewModel.getTrail(trailId).observeAsState()
+
+    val trails by viewModel.trails.observeAsState(emptyList())
+    val currentIndex = trails.indexOfFirst { it.id == trailId }
 
     val times by viewModel
         .observeTimes(trailId)
@@ -48,9 +58,62 @@ fun TrailDetailScreen(
     val context = LocalContext.current
 
     Scaffold(
+        modifier = Modifier.pointerInput(trailId) {
+            var totalDrag = 0f
+
+            detectHorizontalDragGestures(
+                onHorizontalDrag = { change, dragAmount ->
+                    change.consume()
+                    totalDrag += dragAmount
+                },
+                onDragEnd = {
+                    if (trails.isNotEmpty() && currentIndex != -1) {
+
+                        // swipe w lewo → następny szlak
+                        if (totalDrag < -150) {
+                            val nextIndex = (currentIndex + 1) % trails.size
+                            val nextId = trails[nextIndex].id
+
+                            navController.navigate("TrailDetailScreen/$nextId") {
+                                popUpTo("TrailDetailScreen/$trailId") { inclusive = true }
+                            }
+                        }
+
+                        // swipe w prawo → poprzedni szlak
+                        if (totalDrag > 150) {
+                            val prevIndex = if (currentIndex - 1 < 0) {
+                                trails.size - 1
+                            } else {
+                                currentIndex - 1
+                            }
+
+                            val prevId = trails[prevIndex].id
+
+                            navController.navigate("TrailDetailScreen/$prevId") {
+                                popUpTo("TrailDetailScreen/$trailId") { inclusive = true }
+                            }
+                        }
+                    }
+
+                    totalDrag = 0f
+                }
+            )
+        },
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(trail?.name ?: "Ładowanie...") }
+                title = { Text(trail?.name ?: "Ładowanie...") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigate("TrailsListScreen") {
+                            popUpTo("TrailsListScreen") { inclusive = true }
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = "Powrót"
+                        )
+                    }
+                }
             )
         }
     ) { padding ->

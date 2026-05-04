@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import com.example.szlakigrskieam.viewmodel.StopwatchViewModel
 
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +91,8 @@ fun Main(){
                             TrailDetailScreen(
                                 viewModel = trailViewModel,
                                 trailId = selectedTrailId!!,
-                                stopwatchViewModel = stopwatchViewModel
+                                stopwatchViewModel = stopwatchViewModel,
+                                navController = navController
                             )
                         }
                     }
@@ -114,7 +116,8 @@ fun Main(){
             TrailDetailScreen(
                 viewModel = trailViewModel,
                 trailId = trailId,
-                stopwatchViewModel = stopwatchViewModel
+                stopwatchViewModel = stopwatchViewModel,
+                navController = navController
             )
         }
     }
