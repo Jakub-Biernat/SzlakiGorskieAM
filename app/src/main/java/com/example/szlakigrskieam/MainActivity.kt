@@ -30,6 +30,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.ui.Alignment
 import com.example.szlakigrskieam.viewmodel.StopwatchViewModel
+import androidx.compose.material3.*
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.DrawerValue
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
 
 
 
@@ -43,82 +48,121 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
-fun Main(){
+fun Main() {
     val navController = rememberNavController()
     val trailViewModel: TrailViewModel = viewModel()
     val stopwatchViewModel: StopwatchViewModel = viewModel()
 
     var selectedTrailId by remember { mutableStateOf<Int?>(null) }
-    val configuration = LocalConfiguration.current
 
+    val configuration = LocalConfiguration.current
     val isTablet = remember(configuration) {
         configuration.smallestScreenWidthDp >= 600
     }
 
-    NavHost(navController = navController, startDestination = "AnimationScreen"){
-        composable("AnimationScreen") {
-            AnimationScreen(
-                onAnimationEnd = {
-                    navController.navigate("TrailsListScreen") {
-                        popUpTo("SplashScreen") { inclusive = true }
-                    }
-                }
-            )
-        }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    val openDrawer: () -> Unit = {
+        scope.launch { drawerState.open() }
+    }
 
-        composable("TrailsListScreen") {
-            if (isTablet) {
-                Row(modifier = Modifier.fillMaxSize()) {
-                    Box(modifier = Modifier.weight(1f)) {
-                        TrailsListScreen(
-                            viewModel = trailViewModel,
-                            onClick = { id ->
-                                selectedTrailId = id
-                            }
-                        )
-                    }
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Text("Menu", style = MaterialTheme.typography.titleLarge)
 
-                    VerticalDivider()
-
-                    Box(modifier = Modifier.weight(1.5f)) {
-                        if (selectedTrailId == null) {
-                            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text("Wybierz szlak z listy po lewej")
-                            }
-                        } else {
-                            TrailDetailScreen(
-                                viewModel = trailViewModel,
-                                trailId = selectedTrailId!!,
-                                stopwatchViewModel = stopwatchViewModel,
-                                navController = navController
-                            )
-                        }
+                NavigationDrawerItem(
+                    label = { Text("Lista szlaków") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate("TrailsListScreen")
                     }
-                }
-            } else {
-                TrailsListScreen(
-                    viewModel = trailViewModel,
-                    onClick = { id ->
-                        selectedTrailId = id
-                        navController.navigate("TrailDetailScreen/$id")
+                )
+
+                NavigationDrawerItem(
+                    label = { Text("Animacja") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate("AnimationScreen")
                     }
                 )
             }
         }
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = "AnimationScreen"
+        ) {
 
-        composable("TrailDetailScreen/{trailId}") { backStackEntry ->
-            val trailId = backStackEntry.arguments
-                ?.getString("trailId")
-                ?.toIntOrNull() ?: 0
+            composable("AnimationScreen") {
+                AnimationScreen(
+                    onAnimationEnd = {
+                        navController.navigate("TrailsListScreen") {
+                            popUpTo("AnimationScreen") { inclusive = true }
+                        }
+                    }
+                )
+            }
 
-            TrailDetailScreen(
-                viewModel = trailViewModel,
-                trailId = trailId,
-                stopwatchViewModel = stopwatchViewModel,
-                navController = navController
-            )
+            composable("TrailsListScreen") {
+                if (isTablet) {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            TrailsListScreen(
+                                viewModel = trailViewModel,
+                                onClick = { id ->
+                                    navController.navigate("TrailDetailScreen/$id")
+                                },
+                                onMenuClick = openDrawer
+                            )
+                        }
+
+                        VerticalDivider()
+
+                        Box(modifier = Modifier.weight(1.5f)) {
+                            if (selectedTrailId == null) {
+                                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                    Text("Wybierz szlak z listy po lewej")
+                                }
+                            } else {
+                                TrailDetailScreen(
+                                    viewModel = trailViewModel,
+                                    trailId = selectedTrailId!!,
+                                    stopwatchViewModel = stopwatchViewModel,
+                                    navController = navController,
+                                    onMenuClick = openDrawer
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    TrailsListScreen(
+                        viewModel = trailViewModel,
+                        onClick = { id ->
+                            navController.navigate("TrailDetailScreen/$id")
+                        },
+                        onMenuClick = openDrawer
+                    )
+                }
+            }
+
+            composable("TrailDetailScreen/{trailId}") { backStackEntry ->
+                val trailId = backStackEntry.arguments
+                    ?.getString("trailId")
+                    ?.toIntOrNull() ?: 0
+
+                TrailDetailScreen(
+                    viewModel = trailViewModel,
+                    trailId = trailId,
+                    stopwatchViewModel = stopwatchViewModel,
+                    navController = navController,
+                    onMenuClick = openDrawer
+                )
+            }
         }
     }
 }

@@ -33,6 +33,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.navigation.NavController
 import kotlin.math.abs
@@ -44,7 +45,8 @@ fun TrailDetailScreen(
     viewModel: TrailViewModel,
     trailId: Int,
     stopwatchViewModel: StopwatchViewModel,
-    navController: NavController   // 👈 DODAJ
+    navController: NavController,
+    onMenuClick: () -> Unit
 ) {
     val trail by viewModel.getTrail(trailId).observeAsState()
 
@@ -102,15 +104,25 @@ fun TrailDetailScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text(trail?.name ?: "Ładowanie...") },
+
+                // 👈 LEWA STRONA — POWRÓT
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate("TrailsListScreen") {
-                            popUpTo("TrailsListScreen") { inclusive = true }
-                        }
+                        navController.popBackStack()
                     }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBackIosNew,
+                            Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Powrót"
+                        )
+                    }
+                },
+
+                // 👉 PRAWA STRONA — MENU
+                actions = {
+                    IconButton(onClick = onMenuClick) {
+                        Icon(
+                            Icons.Default.Menu,
+                            contentDescription = "Menu"
                         )
                     }
                 }

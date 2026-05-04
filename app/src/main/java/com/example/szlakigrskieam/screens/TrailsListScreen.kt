@@ -17,20 +17,28 @@ import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrailsListScreen(
     viewModel: TrailViewModel,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    onMenuClick: () -> Unit   // 👈 NOWE
 ) {
     val trails by viewModel.trails.observeAsState(emptyList())
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Szlaki") }
+                title = { Text("Lista Szlaków") },
+                navigationIcon = {
+                    IconButton(onClick = onMenuClick) {
+                        Icon(Icons.Default.Menu, contentDescription = "Menu")
+                    }
+                }
             )
         }
     ) { padding ->
