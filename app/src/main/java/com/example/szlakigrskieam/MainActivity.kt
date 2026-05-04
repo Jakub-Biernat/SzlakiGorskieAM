@@ -27,6 +27,7 @@ import com.example.szlakigrskieam.ui.theme.SzlakiGórskieAMTheme
 import com.example.szlakigrskieam.viewmodel.TrailViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.ui.Alignment
 import com.example.szlakigrskieam.viewmodel.StopwatchViewModel
@@ -35,7 +36,8 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.DrawerValue
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.rememberCoroutineScope
-
+import androidx.compose.ui.unit.dp
+import com.example.szlakigrskieam.viewmodel.SettingsViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -43,13 +45,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Main()
+            val settingsViewModel: SettingsViewModel = viewModel()
+
+            SzlakiGórskieAMTheme(darkTheme = settingsViewModel.darkMode) {
+                Main(
+                    darkMode = settingsViewModel.darkMode,
+                    onToggleDarkMode = {
+                        settingsViewModel.darkMode = !settingsViewModel.darkMode
+                    }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun Main() {
+fun Main(
+    darkMode: Boolean,
+    onToggleDarkMode: () -> Unit
+) {
     val navController = rememberNavController()
     val trailViewModel: TrailViewModel = viewModel()
     val stopwatchViewModel: StopwatchViewModel = viewModel()
@@ -71,7 +85,11 @@ fun Main() {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Menu", style = MaterialTheme.typography.titleLarge)
+                Text(
+                    "Menu",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
 
                 NavigationDrawerItem(
                     label = { Text("Lista szlaków") },
@@ -90,6 +108,25 @@ fun Main() {
                         navController.navigate("AnimationScreen")
                     }
                 )
+
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+                // 🔥 PRZEŁĄCZNIK DARK MODE
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Tryb ciemny",
+                        modifier = Modifier.weight(1f)
+                    )
+                    Switch(
+                        checked = darkMode,
+                        onCheckedChange = { onToggleDarkMode() }
+                    )
+                }
             }
         }
     ) {
