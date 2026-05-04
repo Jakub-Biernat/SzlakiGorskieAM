@@ -19,14 +19,33 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Stop
+import com.example.szlakigrskieam.viewmodel.StopwatchViewModel
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import com.example.szlakigrskieam.viewmodel.StopwatchState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrailDetailScreen(
     viewModel: TrailViewModel,
     trailId: Int,
+    stopwatchViewModel: StopwatchViewModel
 ) {
     val trail by viewModel.getTrail(trailId).observeAsState()
+
+    val times by viewModel
+        .observeTimes(trailId)
+        .collectAsState(initial = emptyList())
+
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -35,60 +54,135 @@ fun TrailDetailScreen(
             )
         }
     ) { padding ->
-        val context = LocalContext.current
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
 
             if (trail == null) {
-
                 CircularProgressIndicator()
+                return@Column
+            }
 
-            } else {
+            Image(
+                painter = painterResource(id = trail!!.imageRes),
+                contentDescription = trail!!.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentScale = ContentScale.Crop
+            )
 
-                Image(
-                    painter = painterResource(id = trail!!.imageRes),
-                    contentDescription = trail!!.name,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentScale = ContentScale.Crop
-                )
+            Spacer(Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(16.dp))
+            Text(trail!!.name, style = MaterialTheme.typography.headlineMedium)
 
+            Spacer(Modifier.height(8.dp))
+
+            Text("Kategoria: ${trail!!.category}")
+            Text("Długość: ${trail!!.distance} km")
+            Text("Start: ${trail!!.trailStart}")
+            Text("Koniec: ${trail!!.trailEnd}")
+
+            Spacer(Modifier.height(16.dp))
+
+            Text(text = stringResource(id = trail!!.descRes))
+
+            Spacer(Modifier.height(16.dp))
+
+            Text(
+                text = "Więcej szczegółów",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.clickable {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(trail!!.websiteUrl)
+                    )
+                    context.startActivity(intent)
+                }
+            )
+
+            Spacer(Modifier.height(24.dp))
+
+            StopwatchSection(
+                trailId = trailId,
+                trailViewModel = viewModel,
+                viewModel = stopwatchViewModel
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Text("Zapisane czasy:")
+
+            times.forEach {
                 Text(
-                    text = trail!!.name,
-                    style = MaterialTheme.typography.headlineMedium
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text("Kategoria: ${trail!!.category}")
-                Text("Długość: ${trail!!.distance} km")
-                Text("Start: ${trail!!.trailStart}")
-                Text("Koniec: ${trail!!.trailEnd}")
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = stringResource(id = trail!!.descRes)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "Więcej szczegółów",
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(trail!!.websiteUrl))
-                        context.startActivity(intent)
-                    }
+                    text = "${formatTime(it.timeMillis)} — ${formatDate(it.date)}"
                 )
             }
         }
     }
+}
+
+@Composable
+fun StopwatchSection(
+    trailId: Int,
+    trailViewModel: TrailViewModel,
+    viewModel: StopwatchViewModel
+) {
+
+    val stopwatches by viewModel.stopwatches.collectAsState()
+    val state = stopwatches[trailId] ?: StopwatchState()
+
+    val seconds = (state.time / 1000) % 60
+    val minutes = (state.time / (1000 * 60)) % 60
+    val hours = (state.time / (1000 * 60 * 60))
+
+    Column {
+        Row{
+            Text(
+                text = String.format("%02d:%02d:%02d", hours, minutes, seconds),
+                style = MaterialTheme.typography.headlineLarge
+            )
+
+            IconButton(onClick = {
+                trailViewModel.saveTime(trailId, state.time)
+            }) {
+                Icon(Icons.Default.Save, contentDescription = "Save")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row {
+            IconButton(onClick = { viewModel.start(trailId) }) {
+                Icon(Icons.Default.PlayArrow, contentDescription = "Start")
+            }
+
+            IconButton(onClick = {
+                viewModel.stop(trailId)
+            }) {
+                Icon(Icons.Default.Stop, contentDescription = "Stop")
+            }
+
+            IconButton(onClick = { viewModel.reset(trailId) }) {
+                Icon(Icons.Default.Refresh, contentDescription = "Reset")
+            }
+        }
+    }
+}
+
+fun formatTime(millis: Long): String {
+    val seconds = (millis / 1000) % 60
+    val minutes = (millis / (1000 * 60)) % 60
+    val hours = (millis / (1000 * 60 * 60))
+    return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+}
+
+fun formatDate(time: Long): String {
+    val sdf = java.text.SimpleDateFormat("dd.MM.yyyy HH:mm")
+    return sdf.format(java.util.Date(time))
 }

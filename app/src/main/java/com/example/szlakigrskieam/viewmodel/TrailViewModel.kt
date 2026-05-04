@@ -7,14 +7,25 @@ import androidx.lifecycle.ViewModel
 import com.example.szlakigrskieam.database.Trail
 import com.example.szlakigrskieam.database.TrailDao
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.example.szlakigrskieam.database.AppDatabase
+import com.example.szlakigrskieam.database.TrailTime
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 
 class TrailViewModel(application: Application) : AndroidViewModel(application) {
-    private val trailDao = AppDatabase.getInstance(application).trailDao()
+
+    private val database = AppDatabase.getInstance(application)
+    private val trailDao = database.trailDao()
+
     private val _category = MutableLiveData("górski")
 
-    val trails: LiveData<List<Trail>> = _category.switchMap { trailDao.getTrailsByCategory(it) }
+    val trails = _category.switchMap {
+        trailDao.getTrailsByCategory(it)
+    }
 
     fun setCategory(category: String) {
         _category.value = category
@@ -22,5 +33,21 @@ class TrailViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getTrail(id: Int): LiveData<Trail> {
         return trailDao.getTrailById(id)
+    }
+
+    fun observeTimes(trailId: Int): Flow<List<TrailTime>> {
+        return database.trailTimeDao().getTimesForTrail(trailId)
+    }
+
+    fun saveTime(trailId: Int, time: Long) {
+        viewModelScope.launch {
+            database.trailTimeDao().insertTime(
+                TrailTime(
+                    trailId = trailId,
+                    timeMillis = time,
+                    date = System.currentTimeMillis()
+                )
+            )
+        }
     }
 }

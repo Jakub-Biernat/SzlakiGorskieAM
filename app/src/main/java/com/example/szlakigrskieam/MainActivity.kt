@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.ui.Alignment
+import com.example.szlakigrskieam.viewmodel.StopwatchViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -46,14 +47,13 @@ class MainActivity : ComponentActivity() {
 fun Main(){
     val navController = rememberNavController()
     val trailViewModel: TrailViewModel = viewModel()
+    val stopwatchViewModel: StopwatchViewModel = viewModel()
 
     var selectedTrailId by remember { mutableStateOf<Int?>(null) }
-    val isTablet = LocalConfiguration.current.screenWidthDp >= 600
+    val configuration = LocalConfiguration.current
 
-    LaunchedEffect(isTablet) {
-        if (isTablet && navController.currentDestination?.route?.startsWith("TrailDetailScreen") == true) {
-            navController.popBackStack("TrailsListScreen", inclusive = false)
-        }
+    val isTablet = remember(configuration) {
+        configuration.screenWidthDp >= 600
     }
 
     NavHost(navController = navController, startDestination = "AnimationScreen"){
@@ -89,7 +89,8 @@ fun Main(){
                         } else {
                             TrailDetailScreen(
                                 viewModel = trailViewModel,
-                                trailId = selectedTrailId!!
+                                trailId = selectedTrailId!!,
+                                stopwatchViewModel = stopwatchViewModel
                             )
                         }
                     }
@@ -112,7 +113,8 @@ fun Main(){
 
             TrailDetailScreen(
                 viewModel = trailViewModel,
-                trailId = trailId
+                trailId = trailId,
+                stopwatchViewModel = stopwatchViewModel
             )
         }
     }

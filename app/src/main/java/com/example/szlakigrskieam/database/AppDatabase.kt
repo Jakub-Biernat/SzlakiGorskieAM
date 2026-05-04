@@ -9,10 +9,11 @@ import kotlinx.coroutines.launch
 import com.example.szlakigrskieam.R
 import kotlin.String
 
-@Database(entities = [Trail::class], version = 6)
+@Database(entities = [Trail::class, TrailTime::class], version = 7)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun trailDao(): TrailDao
+    abstract fun trailTimeDao(): TrailTimeDao
 
     companion object {
 

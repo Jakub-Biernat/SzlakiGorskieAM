@@ -13,3 +13,11 @@ data class Trail(
     val websiteUrl: String,
     val imageRes: Int,
 )
+
+@Entity(tableName = "trail_times")
+data class TrailTime(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val trailId: Int,
+    val timeMillis: Long,
+    val date: Long
+)

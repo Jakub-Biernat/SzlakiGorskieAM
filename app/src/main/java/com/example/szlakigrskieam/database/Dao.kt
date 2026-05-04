@@ -1,6 +1,7 @@
 package com.example.szlakigrskieam.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrailDao {
@@ -12,4 +13,14 @@ interface TrailDao {
 
     @Insert
     suspend fun insertTrails(trails: List<Trail>)
+}
+
+@Dao
+interface TrailTimeDao {
+
+    @Insert
+    suspend fun insertTime(time: TrailTime)
+
+    @Query("SELECT * FROM trail_times WHERE trailId = :trailId ORDER BY date DESC")
+    fun getTimesForTrail(trailId: Int): Flow<List<TrailTime>>
 }
