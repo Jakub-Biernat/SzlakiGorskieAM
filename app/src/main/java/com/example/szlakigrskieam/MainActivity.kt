@@ -53,7 +53,7 @@ fun Main(){
     val configuration = LocalConfiguration.current
 
     val isTablet = remember(configuration) {
-        configuration.screenWidthDp >= 600
+        configuration.smallestScreenWidthDp >= 600
     }
 
     NavHost(navController = navController, startDestination = "AnimationScreen"){
