@@ -50,7 +50,6 @@ fun TrailsListScreen(viewModel: TrailViewModel, onClick: (Int) -> Unit) {
                             .clickable { onClick(trail.id) }
                             .padding(8.dp)
                     ) {
-
                         Image(
                             painter = painterResource(id = trail.imageRes),
                             contentDescription = trail.name,
