@@ -1,4 +1,5 @@
 package com.example.szlakigrskieam.database
+
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.szlakigrskieam.screens.TrailTimeWithName
@@ -27,9 +28,8 @@ interface TrailTimeDao {
 
     @Query("""
     SELECT tt.id, tt.trailId, tt.timeMillis, tt.date, t.name AS trailName
-    FROM trail_times tt
-    INNER JOIN trails t ON tt.trailId = t.id
+    FROM trail_times tt INNER JOIN trails t ON tt.trailId = t.id
     ORDER BY tt.date DESC
-""")
+    """)
     fun getAllTimesWithTrailName(): Flow<List<TrailTimeWithName>>
 }

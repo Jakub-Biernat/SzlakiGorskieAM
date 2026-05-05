@@ -10,43 +10,28 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import com.example.szlakigrskieam.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun AnimationScreen(onAnimationEnd: () -> Unit) {
 
-    var startAnimation by remember { mutableStateOf(false) }
+    var start by remember { mutableStateOf(false) }
 
-    // Animator 1 – skala (powiększanie)
-    val scaleAnim by animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0.5f,
-        animationSpec = tween(
-            durationMillis = 1200,
-            easing = FastOutSlowInEasing
-        ),
+    val scale by animateFloatAsState(
+        targetValue = if (start) 1f else 0.5f,
+        animationSpec = tween(1200, easing = FastOutSlowInEasing),
         label = "scale"
     )
 
-    // Animator 2 – przezroczystość (fade in)
-    val alphaAnim by animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
+    val alpha by animateFloatAsState(
+        targetValue = if (start) 1f else 0f,
         animationSpec = tween(1200),
         label = "alpha"
     )
 
-    // Animator 3 – lekki „bounce” (zgodny z Material)
-    val bounceAnim by animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0.8f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "bounce"
-    )
-
-    LaunchedEffect(true) {
-        startAnimation = true
+    LaunchedEffect(Unit) {
+        start = true
         delay(2000)
         onAnimationEnd()
     }
@@ -56,12 +41,12 @@ fun AnimationScreen(onAnimationEnd: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.mountain), // dodaj ikonę gór
-            contentDescription = "Logo",
+            painter = painterResource(R.drawable.mountain),
+            contentDescription = null,
             modifier = Modifier
                 .size(150.dp)
-                .scale(scaleAnim * bounceAnim)
-                .alpha(alphaAnim)
+                .scale(scale)
+                .alpha(alpha)
         )
     }
 }

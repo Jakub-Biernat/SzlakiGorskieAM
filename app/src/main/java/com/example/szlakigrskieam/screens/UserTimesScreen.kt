@@ -9,13 +9,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.szlakigrskieam.database.AppDatabase
-import com.example.szlakigrskieam.database.TrailTime
-import com.example.szlakigrskieam.viewmodel.TrailViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 data class TrailTimeWithName(
     val id: Int,
@@ -28,43 +25,29 @@ data class TrailTimeWithName(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserTimesScreen(
-    viewModel: TrailViewModel,
     navController: NavController,
     onMenuClick: () -> Unit
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
+
+    val context = LocalContext.current
     val db = remember { AppDatabase.getInstance(context) }
 
-    val times by produceState(initialValue = emptyList<TrailTimeWithName>()) {
-        db.trailTimeDao().getAllTimesWithTrailName().collectLatest {
-            value = it
-        }
-    }
+    val times by db.trailTimeDao()
+        .getAllTimesWithTrailName()
+        .collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Moje czasy") },
-
-                // 👈 LEWA STRONA — POWRÓT
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Powrót"
-                        )
+                    IconButton({ navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 },
-
-                // 👉 PRAWA STRONA — MENU
                 actions = {
-                    IconButton(onClick = onMenuClick) {
-                        Icon(
-                            Icons.Default.Menu,
-                            contentDescription = "Menu"
-                        )
+                    IconButton(onMenuClick) {
+                        Icon(Icons.Default.Menu, null)
                     }
                 }
             )
@@ -72,11 +55,12 @@ fun UserTimesScreen(
     ) { padding ->
 
         LazyColumn(
-            modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
+            contentPadding = padding,
+            modifier = Modifier.padding(16.dp)
         ) {
-            items(times) { time ->
+
+            items(times, key = { it.id }) { time ->
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -85,7 +69,7 @@ fun UserTimesScreen(
                     Column(Modifier.padding(12.dp)) {
 
                         Text(
-                            text = "Nazwa szlaku: ${time.trailName}",
+                            "Szlak: ${time.trailName}",
                             style = MaterialTheme.typography.titleMedium
                         )
 

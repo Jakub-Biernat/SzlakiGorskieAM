@@ -1,20 +1,16 @@
 package com.example.szlakigrskieam.viewmodel
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.szlakigrskieam.database.Trail
-import com.example.szlakigrskieam.database.TrailDao
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.szlakigrskieam.database.AppDatabase
+import com.example.szlakigrskieam.database.Trail
 import com.example.szlakigrskieam.database.TrailTime
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
 
 class TrailViewModel(application: Application) : AndroidViewModel(application) {
 

@@ -1,42 +1,37 @@
 package com.example.szlakigrskieam.screens
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.szlakigrskieam.viewmodel.TrailViewModel
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.szlakigrskieam.viewmodel.TrailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrailsListScreen(
     viewModel: TrailViewModel,
     onClick: (Int) -> Unit,
-    onMenuClick: () -> Unit   // 👈 NOWE
+    onMenuClick: () -> Unit
 ) {
+
     val trails by viewModel.trails.observeAsState(emptyList())
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Lista Szlaków") },
+                title = { Text("Lista szlaków") },
                 navigationIcon = {
-                    IconButton(onClick = onMenuClick) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu")
+                    IconButton(onMenuClick) {
+                        Icon(Icons.Default.Menu, contentDescription = null)
                     }
                 }
             )
@@ -53,12 +48,8 @@ fun TrailsListScreen(
                 modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = { viewModel.setCategory("górski") }) {
-                    Text("Górskie")
-                }
-                Button(onClick = { viewModel.setCategory("rowerowy") }) {
-                    Text("Rowerowe")
-                }
+                Button({ viewModel.setCategory("górski") }) { Text("Górskie") }
+                Button({ viewModel.setCategory("rowerowy") }) { Text("Rowerowe") }
             }
 
             LazyVerticalGrid(
@@ -68,20 +59,19 @@ fun TrailsListScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(trails) { trail ->
+
+                items(trails, key = { it.id }) { trail ->
 
                     Card(
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { onClick(trail.id) }
-                            .animateContentSize()
                     ) {
 
                         Column {
 
                             Image(
-                                painter = painterResource(id = trail.imageRes),
+                                painter = painterResource(trail.imageRes),
                                 contentDescription = trail.name,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -89,14 +79,14 @@ fun TrailsListScreen(
                                 contentScale = ContentScale.Crop
                             )
 
-                            Column(modifier = Modifier.padding(8.dp)) {
+                            Column(Modifier.padding(8.dp)) {
                                 Text(
-                                    text = trail.name,
+                                    trail.name,
                                     style = MaterialTheme.typography.titleMedium
                                 )
 
                                 Text(
-                                    text = "${trail.distance} km",
+                                    "${trail.distance} km",
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }

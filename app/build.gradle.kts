@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation("androidx.compose.foundation:foundation:1.6.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation(libs.androidx.ui)
     val nav_version = "2.9.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")

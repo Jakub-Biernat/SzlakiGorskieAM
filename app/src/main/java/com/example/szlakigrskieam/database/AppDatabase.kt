@@ -7,9 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.szlakigrskieam.R
-import kotlin.String
 
-@Database(entities = [Trail::class, TrailTime::class], version = 9)
+@Database(entities = [Trail::class, TrailTime::class], version = 10)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun trailDao(): TrailDao
@@ -28,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_db"
                 )
-                    .addCallback(object : RoomDatabase.Callback() {
+                    .addCallback(object : Callback() {
 
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
@@ -140,7 +139,7 @@ abstract class AppDatabase : RoomDatabase() {
                                 )
                             }
                         }
-                    }).fallbackToDestructiveMigration().build()
+                    }).fallbackToDestructiveMigration(false).build()
                 INSTANCE = instance
                 instance
             }
