@@ -85,15 +85,6 @@ fun Main(
                 )
 
                 NavigationDrawerItem(
-                    label = { Text("Animacja") },
-                    selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                        navController.navigate("AnimationScreen")
-                    }
-                )
-
-                NavigationDrawerItem(
                     label = { Text("Moje czasy") },
                     selected = false,
                     onClick = {

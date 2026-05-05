@@ -3,6 +3,7 @@ package com.example.szlakigrskieam.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -45,10 +46,11 @@ fun TrailsListScreen(
         ) {
 
             Row(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
                 Button({ viewModel.setCategory("górski") }) { Text("Górskie") }
+                Spacer(Modifier.width(16.dp))
                 Button({ viewModel.setCategory("rowerowy") }) { Text("Rowerowe") }
             }
 
