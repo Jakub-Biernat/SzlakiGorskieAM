@@ -41,10 +41,10 @@ fun AnimationScreen(onAnimationEnd: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.mountain),
+            painter = painterResource(R.drawable.logo),
             contentDescription = null,
             modifier = Modifier
-                .size(150.dp)
+                .size(250.dp)
                 .scale(scale)
                 .alpha(alpha)
         )
