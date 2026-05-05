@@ -60,6 +60,19 @@ fun TrailDetailScreen(
     val context = LocalContext.current
 
     Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    // zapis aktualnego czasu stopera
+                    val state = stopwatchViewModel.stopwatches.value[trailId]
+                    if (state != null) {
+                        viewModel.saveTime(trailId, state.time)
+                    }
+                }
+            ) {
+                Icon(Icons.Default.Save, contentDescription = "Zapisz czas")
+            }
+        },
         modifier = Modifier.pointerInput(trailId) {
             var totalDrag = 0f
 
@@ -222,12 +235,6 @@ fun StopwatchSection(
                 text = String.format("%02d:%02d:%02d", hours, minutes, seconds),
                 style = MaterialTheme.typography.headlineLarge
             )
-
-            IconButton(onClick = {
-                trailViewModel.saveTime(trailId, state.time)
-            }) {
-                Icon(Icons.Default.Save, contentDescription = "Save")
-            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

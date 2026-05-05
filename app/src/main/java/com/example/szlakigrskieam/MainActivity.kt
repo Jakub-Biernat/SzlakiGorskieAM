@@ -109,6 +109,15 @@ fun Main(
                     }
                 )
 
+                NavigationDrawerItem(
+                    label = { Text("Moje czasy") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate("UserTimesScreen")
+                    }
+                )
+
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
 
                 // 🔥 PRZEŁĄCZNIK DARK MODE
@@ -200,6 +209,16 @@ fun Main(
                     onMenuClick = openDrawer
                 )
             }
+
+            composable("UserTimesScreen") {
+                UserTimesScreen(
+                    viewModel = trailViewModel,
+                    navController = navController,
+                    onMenuClick = openDrawer
+                )
+            }
         }
+
+
     }
 }

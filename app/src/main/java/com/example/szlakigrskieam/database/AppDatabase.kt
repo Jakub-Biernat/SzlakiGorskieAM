@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import com.example.szlakigrskieam.R
 import kotlin.String
 
-@Database(entities = [Trail::class, TrailTime::class], version = 7)
+@Database(entities = [Trail::class, TrailTime::class], version = 9)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun trailDao(): TrailDao
